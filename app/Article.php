@@ -35,6 +35,31 @@ class Article extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $appends = [
+        'image',
+        'mainCategory',
+    ];
+
+    public function getImageAttribute()
+    {
+        $result = null;
+        $featuredImageKey = array_search('featured', array_column($this->media, 'type'));
+        if ($featuredImageKey !== false) {
+            $featuredImage = $this->media[$featuredImageKey];
+            $result = $featuredImage['media']['attributes']['url'] ?? null;
+        }
+
+        return $result;
+    }
+
+    public function getMainCategoryAttribute()
+    {
+        return $this->categories['primary'] ?? $this->categories['additional'][0] ?? null;
+    }
+
+    /**
      * @param Builder $query
      * @param Request $request
      * @return Builder

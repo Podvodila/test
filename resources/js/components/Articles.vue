@@ -20,8 +20,7 @@
                 <li class="item"
                     v-for="article in articles"
                     :key="article.slug">
-                    <router-link :to="{name: 'Article', params: {slug: article.slug}}">
-                        {{article.title}}
+                    <router-link :to="{name: 'Article', params: {slug: article.slug}}" v-html="article.title">
                     </router-link>
                 </li>
             </ul>
