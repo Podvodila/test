@@ -8,4 +8,5 @@
 - `php artisan key:generate`
 - `php artisan migrate`
 - `php artisan articles:store-from-url {url}` to fill database with articles
+<br>E.g. 200 articles URL - https://raw.githubusercontent.com/SeteMares/full-stack-test/master/feed.json
 - `php artisan serve` and open browser
