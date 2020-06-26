@@ -9,7 +9,7 @@ class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        $articles = Article::all();
+        $articles = Article::filter($request)->get();
 
         return response()->json($articles);
     }
@@ -19,5 +19,10 @@ class ArticleController extends Controller
         $article = Article::query()->where('slug', '=', $slug)->first();
 
         return response()->json($article);
+    }
+
+    public function categories()
+    {
+        return response()->json(Article::getUniqueCategories());
     }
 }

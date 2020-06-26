@@ -16,5 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'articles'], function() {
     Route::get('/', 'ArticleController@index');
-    Route::get('/{slug}', 'ArticleController@show');
+    Route::get('/categories', 'ArticleController@categories');
+    Route::get('/show/{slug}', 'ArticleController@show');
 });
