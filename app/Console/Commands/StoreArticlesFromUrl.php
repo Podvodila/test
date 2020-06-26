@@ -8,6 +8,10 @@ use Illuminate\Database\QueryException;
 
 class StoreArticlesFromUrl extends Command
 {
+    const URL_NOT_VALID_MESSAGE = 'Url is not valid';
+    const JSON_URL_NOT_VALID_MESSAGE = 'Articles are not valid JSON';
+    const DUPLICATED_SLUG_MESSAGE = 'An article already exists with the following slug';
+
     /**
      * The name and signature of the console command.
      *
@@ -80,7 +84,7 @@ class StoreArticlesFromUrl extends Command
     {
         $errorCode = $exception->errorInfo[1];
         if ($errorCode == 1062) {
-            $this->warn("An article already exists with the following slug: $slug");
+            $this->warn(self::DUPLICATED_SLUG_MESSAGE . ': ' . $slug);
         } else {
             $this->error($exception->getMessage());
         }
@@ -92,9 +96,9 @@ class StoreArticlesFromUrl extends Command
      */
     private function validateUrl($url) : bool
     {
-        $valid = filter_var($url, FILTER_VALIDATE_URL) !== false;
+        $valid = filter_var($url, FILTER_VALIDATE_URL) !== false || file_exists($url);
         if (!$valid) {
-            $this->error('Url is not valid');
+            $this->error(self::URL_NOT_VALID_MESSAGE);
         }
         return $valid;
     }
@@ -106,7 +110,7 @@ class StoreArticlesFromUrl extends Command
     private function validateJson($string) : bool
     {
         if (!$valid = isJson($string)) {
-            $this->error('Articles are not valid JSON');
+            $this->error(self::JSON_URL_NOT_VALID_MESSAGE);
         }
         return $valid;
     }
